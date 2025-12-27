@@ -64,32 +64,55 @@ namespace Order_Management_System.Services
 
         }
 
-        public async Task DeleteOrderAsync(Order order)
-            => await _unitOfWork.Orders.DeleteAsync(order);
-
-        public async Task<IEnumerable<Order>> GetAllOrdersAsync()
-            => await _unitOfWork.Orders.GetAllAsync();
-
-        public async Task<Order?> GetOrderByIdAsync(Guid id)
-            => await _unitOfWork.Orders.GetByIdAsync(id);
-
-        public async Task UpdateOrderAsync(Order order)
-            => await _unitOfWork.Orders.UpdateAsync(order);
-
-        public async Task<Order?> UpdateOrderStatusAsync(Guid orderId, OrderStatus status)
+        public async Task<IEnumerable<OrderResponseDto>> GetAllOrdersAsync()
         {
-            var order = await _unitOfWork.Orders.GetByIdAsync(orderId);
-            if (order == null)
-                throw new Exception("Order not found");
-            
-            order.Status = status;
-            await _unitOfWork.Orders.UpdateAsync(order);
-            await _unitOfWork.SaveChangesAsync();
-            return order;
+            var orders = await _unitOfWork.Orders.GetAllAsync();
+
+            return orders.Select(o => new OrderResponseDto
+            {
+                OrderId = o.OrderId,
+                OrderDate = o.OrderDate,
+                TotalAmount = o.TotalAmount,
+                Status = o.Status
+            });
         }
 
-        public async Task SaveChangesAsync()
-            => await _unitOfWork.SaveChangesAsync();
+        public async Task<OrderResponseDto?> GetOrderByIdAsync(Guid id)
+        {
+            var order = await _unitOfWork.Orders.GetByIdAsync(id);
+            if (order == null) return null;
+
+            return new OrderResponseDto
+            {
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                TotalAmount = order.TotalAmount,
+                Status = order.Status
+            };
+        }
+
+        public async Task UpdateOrderStatusAsync(Guid orderId, OrderStatus status)
+        {
+            var order = await _unitOfWork.Orders.GetByIdAsync(orderId)
+                        ?? throw new Exception("Order not found");
+
+            order.Status = status;
+
+            if (status == OrderStatus.Delivered)
+            {
+                var invoice = new Invoice
+                {
+                    InvoiceId = Guid.NewGuid(),
+                    OrderId = order.OrderId,
+                    InvoiceDate = DateTime.UtcNow,
+                    TotalAmount = order.TotalAmount
+                };
+
+                await _unitOfWork.Invoices.AddAsync(invoice);
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+        }
 
     }
 }

@@ -4,7 +4,7 @@ using Order_Management_System.DTO;
 
 namespace Order_Management_System.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace Order_Management_System.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var products = await _productService.GetAllProdcts();
+            var products = await _productService.GetAllProductsAsync();
             return Ok(products);
         }
 
@@ -26,27 +26,21 @@ namespace Order_Management_System.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var product = await _productService.GetProductByIdAsync(id);
-            if (product == null)
-                return NotFound();
-            
-            return Ok(product);
+            return product == null ? NotFound() : Ok(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromBody] ProductDetails products)
+        public async Task<IActionResult> AddProduct([FromBody] ProductCreateDto dto)
         {
-            var product = new Product
-            {
-                ProductId = Guid.NewGuid(),
-                Name = products.Name,
-                Price = products.Price,
-                StockQuantity = products.StockQuantity
-            };
+            var id = await _productService.AddProductAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id }, null);
+        }
 
-            await _productService.AddProductAsync(product);
-            await _productService.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetById) , new {id = product.ProductId }, product);
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] ProductUpdateDto dto)
+        {
+            await _productService.UpdateProductAsync(id, dto);
+            return NoContent();
         }
     }
 }

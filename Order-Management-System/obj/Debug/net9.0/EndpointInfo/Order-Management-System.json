@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/customers": {
+    "/api/customers/{id}": {
       "get": {
         "tags": [
           "Customer"
@@ -13,7 +13,8 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -25,7 +26,9 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/api/customers": {
       "post": {
         "tags": [
           "Customer"
@@ -71,6 +74,41 @@
               "format": "uuid"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/invoices/{id}": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/invoices": {
+      "get": {
+        "tags": [
+          "Invoice"
         ],
         "responses": {
           "200": {
@@ -185,7 +223,7 @@
         }
       }
     },
-    "/api/Product": {
+    "/api/products": {
       "get": {
         "tags": [
           "Product"
@@ -226,7 +264,7 @@
         }
       }
     },
-    "/api/Product/{id}": {
+    "/api/products/{id}": {
       "get": {
         "tags": [
           "Product"

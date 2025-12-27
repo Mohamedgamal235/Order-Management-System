@@ -7,31 +7,30 @@ namespace Order_Management_System.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderService orderService;
+        private readonly IOrderService _orderService;
         public OrderController(IOrderService orderService)
         {
-            this.orderService = orderService;
+            _orderService = orderService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
+        public async Task<IActionResult> CreateOrder(CreateOrderDto dto)
         {
-            var orderId = await orderService.CreateOrderAsync(dto);
-            return CreatedAtAction(nameof(GetOrderById), new {id = orderId} , null);
+            var id = await _orderService.CreateOrderAsync(dto);
+            return CreatedAtAction(nameof(GetOrderById), new { id }, null);
         }
 
         [HttpGet]
         // admin
         public async Task<IActionResult> GetAllOrders()
         {
-            var orders = await orderService.GetAllOrdersAsync();
-            return Ok(orders);
+            return Ok(await _orderService.GetAllOrdersAsync());
         }
 
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetOrderById(Guid id)
         {
-            var order = await orderService.GetOrderByIdAsync(id);
+            var order = await _orderService.GetOrderByIdAsync(id);
             if (order == null)
             {
                 return NotFound();
@@ -40,10 +39,10 @@ namespace Order_Management_System.Controllers
         }
 
         [HttpPut("{id:guid}/status")]
-        public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] UpdateOrderStatusDto dto)
+        public async Task<IActionResult> UpdateOrderStatus(Guid id, UpdateOrderStatusDto dto)
         {
-            var order = await orderService.UpdateOrderStatusAsync(id, dto.Status);
-            return Ok(order);
+            await _orderService.UpdateOrderStatusAsync(id, dto.Status);
+            return NoContent();
         }
 
     }

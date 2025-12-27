@@ -13,31 +13,22 @@ namespace Order_Management_System.Controllers
             _customerService = customerService;
         }
 
-        [HttpGet]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetCustomerById(Guid id)
         {
-            var customers = await _customerService.GetCustomerByIdAsync(id);
-            return Ok(customers);
+            var customer = await _customerService.GetCustomerByIdAsync(id);
+            return customer == null ? NotFound() : Ok(customer);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCustomer(CreateCustomerDto createCustomerDto)
+        public async Task<IActionResult> CreateCustomer(CreateCustomerDto dto)
         {
-            var customer = new Customer
-            {
-                CustmerId = Guid.NewGuid(),
-                Name = createCustomerDto.Name,
-                Email = createCustomerDto.Email,
-            };
-
-            await _customerService.AddCustomerAsync(customer);
-            await _customerService.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetCustomerById), new { id = customer.CustmerId }, customer);
+            var id = await _customerService.CreateCustomerAsync(dto);
+            return CreatedAtAction(nameof(GetCustomerById), new { id }, null);
         }
 
         [HttpGet("{id:guid}/orders")]
-        public async Task<IActionResult> GetOrdersForCustomer(Guid id)
+        public async Task<IActionResult> GetCustomerOrders(Guid id)
         {
             var orders = await _customerService.GetOrdersForCustomerAsync(id);
             return Ok(orders);

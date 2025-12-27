@@ -1,30 +1,14 @@
 [
   {
     "ContainingType": "Order_Management_System.Controllers.CustomerController",
-    "Method": "GetCustomerById",
-    "RelativePath": "api/customers",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "Order_Management_System.Controllers.CustomerController",
-    "Method": "AddCustomer",
+    "Method": "CreateCustomer",
     "RelativePath": "api/customers",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "createCustomerDto",
+        "Name": "dto",
         "Type": "Order_Management_System.DTO.CreateCustomerDto",
         "IsRequired": true
       }
@@ -33,8 +17,50 @@
   },
   {
     "ContainingType": "Order_Management_System.Controllers.CustomerController",
-    "Method": "GetOrdersForCustomer",
+    "Method": "GetCustomerById",
+    "RelativePath": "api/customers/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Order_Management_System.Controllers.CustomerController",
+    "Method": "GetCustomerOrders",
     "RelativePath": "api/customers/{id}/orders",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Order_Management_System.Controllers.InvoiceController",
+    "Method": "GetAllInvoices",
+    "RelativePath": "api/invoices",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Order_Management_System.Controllers.InvoiceController",
+    "Method": "GetInvoiceById",
+    "RelativePath": "api/invoices/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -113,7 +139,7 @@
   {
     "ContainingType": "Order_Management_System.Controllers.ProductController",
     "Method": "GetAll",
-    "RelativePath": "api/Product",
+    "RelativePath": "api/products",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -123,7 +149,7 @@
   {
     "ContainingType": "Order_Management_System.Controllers.ProductController",
     "Method": "AddProduct",
-    "RelativePath": "api/Product",
+    "RelativePath": "api/products",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -139,7 +165,7 @@
   {
     "ContainingType": "Order_Management_System.Controllers.ProductController",
     "Method": "GetById",
-    "RelativePath": "api/Product/{id}",
+    "RelativePath": "api/products/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

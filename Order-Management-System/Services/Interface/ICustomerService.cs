@@ -2,9 +2,8 @@
 {
     public interface ICustomerService
     {
-        Task AddCustomerAsync(Customer customer);
-        Task<Customer?> GetCustomerByIdAsync(Guid id);
-        Task<IEnumerable<Order>> GetOrdersForCustomerAsync(Guid customerId);
-        Task SaveChangesAsync();
+        Task<Guid> CreateCustomerAsync(CreateCustomerDto dto);
+        Task<CustomerResponseDto?> GetCustomerByIdAsync(Guid id);
+        Task<IEnumerable<OrderResponseDto>> GetOrdersForCustomerAsync(Guid customerId);
     }
 }
