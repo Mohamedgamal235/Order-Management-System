@@ -37,7 +37,7 @@ namespace Order_Management_System.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] ProductUpdateDto dto)
+        public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] ProductUpdateDto dto)
         {
             await _productService.UpdateProductAsync(id, dto);
             return NoContent();
