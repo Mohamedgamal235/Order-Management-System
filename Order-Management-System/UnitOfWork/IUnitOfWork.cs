@@ -7,6 +7,8 @@ namespace Order_Management_System.UnitOfWork
         IGenericRepository<Order> Orders { get; }
         IGenericRepository<Product> Products { get; }
         IGenericRepository<Customer> Customers { get; }
+        IGenericRepository<Invoice> Invoices { get; }
+
 
         Task SaveChangesAsync();
     }

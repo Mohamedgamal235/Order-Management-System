@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Order_Management_System.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/customers")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -34,6 +34,13 @@ namespace Order_Management_System.Controllers
             await _customerService.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetCustomerById), new { id = customer.CustmerId }, customer);
+        }
+
+        [HttpGet("{id:guid}/orders")]
+        public async Task<IActionResult> GetOrdersForCustomer(Guid id)
+        {
+            var orders = await _customerService.GetOrdersForCustomerAsync(id);
+            return Ok(orders);
         }
     }
 }

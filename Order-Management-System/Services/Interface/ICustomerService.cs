@@ -4,6 +4,7 @@
     {
         Task AddCustomerAsync(Customer customer);
         Task<Customer?> GetCustomerByIdAsync(Guid id);
+        Task<IEnumerable<Order>> GetOrdersForCustomerAsync(Guid customerId);
         Task SaveChangesAsync();
     }
 }

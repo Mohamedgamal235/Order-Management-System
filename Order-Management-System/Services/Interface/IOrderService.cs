@@ -4,8 +4,10 @@
     {
         Task<IEnumerable<Order>> GetAllOrdersAsync();
         Task<Order?> GetOrderByIdAsync(Guid id);
-        Task AddOrderAsync(Order order);
+        Task<Guid> CreateOrderAsync(CreateOrderDto dto);
         Task UpdateOrderAsync(Order order);
         Task DeleteOrderAsync(Order order);
+        Task<Order?> UpdateOrderStatusAsync(Guid orderId, OrderStatus status);
+        Task SaveChangesAsync();
     }
 }

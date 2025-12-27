@@ -10,6 +10,7 @@ namespace Order_Management_System.UnitOfWork
         public IGenericRepository<Order> Orders { get; }
         public IGenericRepository<Product> Products { get; }
         public IGenericRepository<Customer> Customers { get; }
+        public IGenericRepository<Invoice> Invoices { get; }
 
         public UnitOfWork(OrderManagementSystemContext context)
         {
@@ -17,6 +18,7 @@ namespace Order_Management_System.UnitOfWork
             Orders = new GenericRepository<Order>(_context);
             Products = new GenericRepository<Product>(_context);
             Customers = new GenericRepository<Customer>(_context);
+            Invoices = new GenericRepository<Invoice>(_context);
         }
 
         public void Dispose()
