@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Order_Management_System.Constants;
 
 namespace Order_Management_System.Controllers
 {
     [Route("api/orders")]
     [ApiController]
+    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -14,7 +16,7 @@ namespace Order_Management_System.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateOrder(CreateOrderDto dto)
+        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
         {
             var id = await _orderService.CreateOrderAsync(dto);
             return CreatedAtAction(nameof(GetOrderById), new { id }, null);
@@ -22,6 +24,7 @@ namespace Order_Management_System.Controllers
 
         [HttpGet]
         // admin
+        [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> GetAllOrders()
         {
             return Ok(await _orderService.GetAllOrdersAsync());
@@ -39,7 +42,8 @@ namespace Order_Management_System.Controllers
         }
 
         [HttpPut("{id:guid}/status")]
-        public async Task<IActionResult> UpdateOrderStatus(Guid id, UpdateOrderStatusDto dto)
+        [Authorize(Roles = Role.Admin)]
+        public async Task<IActionResult> UpdateOrderStatus(Guid id, [FromBody] UpdateOrderStatusDto dto)
         {
             await _orderService.UpdateOrderStatusAsync(id, dto.Status);
             return NoContent();

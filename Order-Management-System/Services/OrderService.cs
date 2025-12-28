@@ -57,7 +57,16 @@ namespace Order_Management_System.Services
 
             order.TotalAmount = total;
 
+            var invoice = new Invoice
+            {
+                InvoiceId = Guid.NewGuid(),
+                OrderId = order.OrderId,
+                InvoiceDate = DateTime.UtcNow,
+                TotalAmount = order.TotalAmount
+            };
+
             await _unitOfWork.Orders.AddAsync(order);
+            await _unitOfWork.Invoices.AddAsync(invoice);
             await _unitOfWork.SaveChangesAsync();
 
             return order.OrderId;

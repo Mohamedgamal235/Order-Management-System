@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Order_Management_System.Controllers
 {
     [Route("api/customers")]
     [ApiController]
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
@@ -21,7 +21,7 @@ namespace Order_Management_System.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer(CreateCustomerDto dto)
+        public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerDto dto)
         {
             var id = await _customerService.CreateCustomerAsync(dto);
             return CreatedAtAction(nameof(GetCustomerById), new { id }, null);

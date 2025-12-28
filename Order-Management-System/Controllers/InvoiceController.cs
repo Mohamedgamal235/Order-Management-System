@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Order_Management_System.Constants;
 
 namespace Order_Management_System.Controllers
 {
     [Route("api/invoices")]
     [ApiController]
+    [Authorize(Roles =Role.Admin)]
     public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceService _invoiceService;

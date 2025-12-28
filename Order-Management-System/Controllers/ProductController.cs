@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Order_Management_System.Constants;
 using Order_Management_System.DTO;
 
 namespace Order_Management_System.Controllers
 {
     [Route("api/products")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -30,6 +32,7 @@ namespace Order_Management_System.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> AddProduct([FromBody] ProductCreateDto dto)
         {
             var id = await _productService.AddProductAsync(dto);
@@ -37,6 +40,7 @@ namespace Order_Management_System.Controllers
         }
 
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] ProductUpdateDto dto)
         {
             await _productService.UpdateProductAsync(id, dto);
